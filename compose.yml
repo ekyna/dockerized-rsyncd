@@ -1,0 +1,27 @@
+version: '3.7'
+
+volumes:
+    ssh:
+        external:
+            name: ${COMPOSE_PROJECT_NAME}_ssh
+    data:
+        external:
+            name: ${COMPOSE_PROJECT_NAME}_data
+
+services:
+    rsync:
+        container_name: ${COMPOSE_PROJECT_NAME}_rsync
+        build: ./build
+        image: ${COMPOSE_PROJECT_NAME}/rsync
+        environment:
+            READ_ONLY: ${READ_ONLY}
+            CHROOT: ${CHROOT}
+            HOSTS_ALLOW: ${HOSTS_ALLOW}
+            USER_ID: ${USER_ID}
+            GROUP_ID: ${GROUP_ID}
+        ports:
+            - "${RSYNC_PORT}:873"
+            - "${SSH_PORT}:22"
+        volumes:
+            - ssh:/root/.ssh:rw
+            - data:/data:rw

@@ -1,2 +1,2 @@
-RSYNC server for docker
-======================
+Rsync server 
+============
